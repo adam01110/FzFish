@@ -68,16 +68,16 @@ set -U fifc_custom_fzf_opts +e
 
 fifc can use modern tools if available:
 
-| Prefer                                           | Fallback to | Used for                                  | Custom options     |
-| ------------------------------------------------ | ----------- | ----------------------------------------- | ------------------ |
-| [bat](https://github.com/sharkdp/bat)            | cat         | Preview files                             | `$fifc_bat_opts`   |
-| [chafa](https://github.com/hpjansson/chafa)      | file        | Preview images, gif, pdf etc              | `$fifc_chafa_opts` |
-| [hexyl](https://github.com/sharkdp/hexyl)        | file        | Preview binaries                          | `$fifc_hexyl_opts` |
-| [fd](https://github.com/sharkdp/fd)              | find        | Complete paths                            | `$fifc_fd_opts`    |
-| [eza](https://github.com/eza-community/eza)      | ls          | Preview directories                       | `$fifc_eza_opts`   |
-| [ripgrep](https://github.com/BurntSushi/ripgrep) | pcregrep    | Search options in man pages               | -                  |
-| [procs](https://github.com/dalance/procs)        | ps          | Complete processes and preview their tree | `$fifc_procs_opts` |
-| [broot](https://github.com/Canop/broot)          | -           | Explore directory trees                   | `$fifc_broot_opts` |
+| Prefer                                           | Fallback to | Used for                                  | Custom options                            |
+| ------------------------------------------------ | ----------- | ----------------------------------------- | ----------------------------------------- |
+| [bat](https://github.com/sharkdp/bat)            | cat         | Preview files                             | `$fifc_bat_opts`                          |
+| [chafa](https://github.com/hpjansson/chafa)      | file        | Preview images, gif, pdf etc              | `$fifc_chafa_opts`                        |
+| [hexyl](https://github.com/sharkdp/hexyl)        | file        | Preview binaries                          | `$fifc_hexyl_opts`                        |
+| [fd](https://github.com/sharkdp/fd)              | find        | Complete paths                            | `$fifc_fd_opts`                           |
+| [eza](https://github.com/eza-community/eza)      | exa, ls     | Preview directories                       | `$fifc_eza_opts`, `$fifc_exa_opts`, `$fifc_ls_opts` |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) | pcregrep    | Search options in man pages               | -                                         |
+| [procs](https://github.com/dalance/procs)        | ps          | Complete processes and preview their tree | `$fifc_procs_opts`                        |
+| [broot](https://github.com/Canop/broot)          | -           | Explore directory trees                   | `$fifc_broot_opts`                        |
 
 Custom options can be added for any of the commands used by fifc using the variable mentioned in the above table.
 

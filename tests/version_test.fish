@@ -22,8 +22,9 @@ set -l actual (_fifc_test_version "3.4" -gt "3")
 set -l actual (_fifc_test_version "3.4" -gt "3")
 @test "version test length not equal 1" $status = 0
 
-set -l actual (_fifc_test_version "3" -gt "3.4")
-@test "version test length not equal 2" $status = 1
+_fifc_test_version 3 -gt "3.4"
+set -l actual_status $status
+@test "version test length not equal 2" "$actual_status" = 1
 
 set -l actual (_fifc_test_version "fish 3.5.0" -gt "3.4.2")
 @test "version test extract version left" $status = 0

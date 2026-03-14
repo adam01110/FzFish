@@ -5,6 +5,7 @@ Snapshot: 2026-03-13
 Base repository: `gazorby/fifc`
 
 Scope:
+
 - Open pull requests in `gazorby/fifc`
 - Current fork under review:
   - `adam01110/fifc`
@@ -14,11 +15,13 @@ Scope:
   - `schmas/fifc`
 
 Method:
+
 - Pull requests were read from the public GitHub API.
 - Fork branches were fetched locally and compared against `origin/main`.
 - A separate subagent summary was run for each fork-only commit.
 
 Legend:
+
 - `Y` = exact or clearly present
 - `~` = approximate / partial / broader variant
 - `subset` = narrower duplicate of a broader change
@@ -107,10 +110,12 @@ This is the fork overlay for features that are not coming from the open PR list.
 ### `adam01110/fifc`
 
 Net effect:
+
 - Exact PR bundle (`#49`, `#52`, `#54`, `#60`) plus several extra completion fixes and selective UX additions from other forks.
 - The fork-only changes are not a UI redesign; they make existing completion behavior survive more shell states and more path shapes.
 
 What the fork-only features actually do:
+
 - Binding persistence: when Fish switches keymaps by changing `fish_key_bindings` (for example after enabling vi bindings), FIFC now re-runs its bind setup automatically. Before this, the configured FIFC key could disappear until a new shell was opened.
 - Custom `fzf` flags really apply: `functions/_fifc.fish` now passes `$fifc_custom_fzf_opts` into the `fzf` command line, so user-supplied extra flags are not silently dropped.
 - Paths with spaces display correctly: file completion now compares the current directory against the raw path instead of an already shell-escaped one. Before this, working inside a directory whose name contained spaces could make FIFC show long/full paths where short relative names were expected.
@@ -126,11 +131,13 @@ What the fork-only features actually do:
 ### `justbispo/fifc`
 
 Net effect:
+
 - Closest thing to a "merge the good open PRs" fork.
 - Contains PR `#49`, PR `#52`, PR `#60`, and the PR `#61` behavior.
 - Adds four extra fixes not present in the open PR list: binding persistence, custom `fzf` flags actually being forwarded, spaces in path display, and apostrophe-safe completion.
 
 What the fork-only features actually do:
+
 - Binding persistence: moves FIFC binding setup into a function that also runs when `fish_key_bindings` changes, so switching between Fish keymaps does not drop the FIFC keybinding.
 - Custom `fzf` flags really apply: fixes the variable name used when building the `fzf` command. Before this, `fifc_custom_fzf_opts` existed but user-supplied extra flags were silently ignored.
 - Paths with spaces display correctly: separates raw-path checks from shell-escaped command output, so FIFC still recognizes `$PWD` correctly when directory names contain spaces and keeps showing short relative names.
@@ -139,10 +146,12 @@ What the fork-only features actually do:
 ### `thalesmello/fifc`
 
 Net effect:
+
 - Independent UX/completion stack, not a bundle of the existing open PRs.
 - No exact PR carry from `#36`, `#49`, `#52`, `#54`, `#60`, or `#61`.
 
 What the fork-only features actually do:
+
 - Wrapped preview: the generic/default preview pane uses `--preview-window wrap`, so long lines wrap inside the preview instead of forcing horizontal scrolling.
 - Correct man-page jump: when FIFC opens a selected CLI option from a man page, it now computes the matching line number first and opens `less` at that line. This is more precise than searching by regex inside raw pager output.
 - Shallower `~` search: completions rooted directly at `$HOME` are limited to depth 1. That cuts noise and cost when completing from `~` without changing deeper searches elsewhere.
@@ -153,11 +162,13 @@ What the fork-only features actually do:
 ### `schmas/fifc`
 
 Net effect:
+
 - Largest fork-only UX redesign of the three.
 - Final branch keeps hidden-file support, case-insensitive mode, depth controls, new preview behavior, and fzf keybinding changes.
 - Approximate overlap with PR `#52` and PR `#54`, but not exact carries.
 
 What the fork-only features actually do:
+
 - Hidden-file mode: `set -U fifc_show_hidden true` makes file and directory completion include dotfiles by default, and the same behavior is preserved when reloading results at different search depths.
 - Case-insensitive mode: `set -U fifc_case_insensitive true` adds `fzf -i`, so case mismatches stop blocking results.
 - Picker navigation redesign: `Tab` and `Shift-Tab` move up and down inside the picker, multiselect moves to `ctrl-space` by default or `fifc_multi_keybinding`, and toggling selection no longer jumps to the next row automatically.

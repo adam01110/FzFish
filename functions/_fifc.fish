@@ -32,6 +32,14 @@ function _fifc
         set case_flag -i
     end
 
+    set -l fifc_history_dir "$HOME/.local/share/fifc"
+    mkdir -p "$fifc_history_dir"
+
+    set -l history_group "$fifc_group"
+    if test -z "$history_group"
+        set history_group default
+    end
+
     set -l fzf_cmd "
         _fifc_launched_by_fzf=1 SHELL=fish fzf \
             -d \t \
@@ -47,6 +55,7 @@ function _fifc
             --preview '_fifc_action preview {} {q}' \
             --bind='$fifc_open_keybinding:execute(_fifc_action open {} {q} &> /dev/tty)' \
             --query $fifc_safe_query \
+            --history=$fifc_history_dir/fzf-history-$history_group \
             $case_flag \
             $fifc_custom_fzf_opts"
 

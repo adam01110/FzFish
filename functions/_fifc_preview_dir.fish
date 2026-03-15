@@ -6,6 +6,6 @@ function _fifc_preview_dir -d "List content of the selected directory"
     else if type -q exa
         exa -1a --color=always $fifc_exa_opts "$fifc_candidate"
     else
-        command ls -A -F $fifc_ls_opts "$fifc_candidate"
+        ls -A -F $fifc_ls_opts "$fifc_candidate"
     end
 end

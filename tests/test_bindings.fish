@@ -8,15 +8,19 @@ or _fifc_set_bindings
 @test "bindings directory source command" "$_fifc_comp_1[5]" = _fifc_source_directories
 set actual_dir_opts "$_fifc_comp_1[6]"
 string match --quiet -- "*ctrl-j:transform(_fifc_depth_transform +1 d)*" "$actual_dir_opts"
-@test "bindings directory opts include ctrl-j depth" $status = 0
+set actual_status $status
+@test "bindings directory opts include ctrl-j depth" "$actual_status" = 0
 string match --quiet -- "*alt-9:transform(_fifc_depth_transform 9 d)*" "$actual_dir_opts"
-@test "bindings directory opts include numeric depth" $status = 0
+set actual_status $status
+@test "bindings directory opts include numeric depth" "$actual_status" = 0
 
 @test "bindings file source command" "$_fifc_comp_2[5]" = _fifc_source_files
 set actual_file_opts "$_fifc_comp_2[6]"
 string match --quiet -- "*ctrl-j:transform(_fifc_depth_transform +1)*" "$actual_file_opts"
-@test "bindings file opts include ctrl-j depth" $status = 0
+set actual_status $status
+@test "bindings file opts include ctrl-j depth" "$actual_status" = 0
 string match --quiet -- "*alt-9:transform(_fifc_depth_transform 9)*" "$actual_file_opts"
-@test "bindings file opts include numeric depth" $status = 0
+set actual_status $status
+@test "bindings file opts include numeric depth" "$actual_status" = 0
 
 @test "bindings process source command" "$_fifc_comp_3[5]" = 'ps -ax -o pid=,command='

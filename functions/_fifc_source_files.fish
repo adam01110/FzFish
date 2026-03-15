@@ -33,8 +33,6 @@ function _fifc_source_files -d "Return a command to recursively find files"
             echo "fd . $fd_base_opts"
         else if test "$raw_path" = "."
             echo "fd . $fd_base_opts"
-        else if test -n "$hidden"
-            echo "fd . $fd_base_opts -- $escaped_path"
         else
             echo "fd . $fd_base_opts -- $escaped_path"
         end

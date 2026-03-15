@@ -41,6 +41,9 @@ function _fifc
         set history_group default
     end
 
+    set -l fzf_output_path (string join '' (mktemp) "_fifc_out")
+    set -l source_output_path
+
     set -l fzf_cmd "
         _fifc_launched_by_fzf=1 SHELL=fish fzf \
             -d \t \
@@ -54,7 +57,6 @@ function _fifc
             --reverse \
             --header '$header' \
             --preview '_fifc_action preview {} {q}' \
-            --bind='tab:down,shift-tab:up' \
             --bind='$fifc_open_keybinding:execute(_fifc_action open {} {q} &> /dev/tty)' \
             --query $fifc_safe_query \
             --history=$fifc_history_dir/fzf-history-$history_group \
@@ -62,10 +64,26 @@ function _fifc
             $_fifc_default_source_fzf_opts \
             $fifc_custom_fzf_opts"
 
-    set -l cmd (string join -- " | " $source_cmd $fzf_cmd)
-    # We use eval hack because wrapping source command
-    # inside a function cause some delay before fzf to show up
-    eval $cmd | while read -l token
+    if command tail --pid=$fish_pid -n 0 /dev/null >/dev/null 2>/dev/null
+        set -l source_output_path (string join '' (mktemp) "_fifc_source")
+        command touch $source_output_path
+
+        fish -c "$source_cmd" >$source_output_path &
+        set -l source_pid $last_pid
+        disown $source_pid 2>/dev/null
+
+        # Keep the source producer detached from the interactive shell so fzf can
+        # return immediately even if the filesystem walk stalls after selection.
+        tail --pid=$source_pid -n +1 -f $source_output_path | eval $fzf_cmd >$fzf_output_path
+        command kill $source_pid 2>/dev/null
+    else
+        set -l cmd (string join -- " | " $source_cmd $fzf_cmd)
+        # We use eval hack because wrapping source command
+        # inside a function cause some delay before fzf to show up
+        eval $cmd >$fzf_output_path
+    end
+
+    while read -l token
         # don't escape '~' for path, `$` for environ
         if string match --quiet '~*' -- $token
             set -a result (string join -- "" "~" (string sub --start 2 -- $token | string escape))
@@ -78,16 +96,19 @@ function _fifc
         if test -n "$_fifc_extract_regex"
             set result[-1] (string match --regex --groups-only -- "$_fifc_extract_regex" "$token")
         end
-    end
+    end <$fzf_output_path
 
     # Add space trailing space only if:
     # - there is no trailing space already present
     # - Result is not a directory
     # We need to unescape $result for directory test as we escaped it before
-    if test (count $result) -eq 1; and not test -d (string unescape -- $result[1])
-        set -l buffer (string split -- "$fifc_commandline" (commandline -b))
-        if not string match -- ' *' "$buffer[2]"
-            set -a result ''
+    if test (count $result) -eq 1
+        set -l result_path (_fifc_expand_tilde (string unescape -- $result[1]))
+        if not test -d "$result_path"
+            set -l buffer (string split -- "$fifc_commandline" (commandline -b))
+            if not string match -- ' *' "$buffer[2]"
+                set -a result ''
+            end
         end
     end
 
@@ -98,6 +119,7 @@ function _fifc
     commandline --function repaint
 
     command $fifc_rm_cmd $_fifc_complist_path
+    command $fifc_rm_cmd $fzf_output_path $source_output_path 2>/dev/null
     # Clean state
     set -e _fifc_extract_regex
     set -e _fifc_default_source_fzf_opts

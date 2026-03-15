@@ -22,18 +22,18 @@ function _fifc_action
         set default_source 1
     end
 
-    for i in (seq (count $comp))
+    for comp_name in $comp
         set -l condition_cmd
         set -l regex_cmd
         set -l valid 1
-        if test -n "$$comp[$i][1]"
-            set condition_cmd "$$comp[$i][1]"
+        if test -n "$$comp_name[1][1]"
+            set condition_cmd "$$comp_name[1][1]"
         else
             set condition_cmd true
         end
-        if test -n "$$comp[$i][2]"
+        if test -n "$$comp_name[1][2]"
             set -l val (string escape -- "$fifc_commandline")
-            set regex_cmd "string match --regex --quiet -- '$$comp[$i][2]' $val"
+            set regex_cmd "string match --regex --quiet -- '$$comp_name[1][2]' $val"
         else
             set regex_cmd true
         end
@@ -43,20 +43,20 @@ function _fifc_action
             continue
         end
 
-        set _fifc_extract_regex "$$comp[$i][7]"
+        set _fifc_extract_regex "$$comp_name[1][7]"
 
-        if test "$action" = preview; and test -n "$$comp[$i][3]"
-            eval $$comp[$i][3]
+        if test "$action" = preview; and test -n "$$comp_name[1][3]"
+            eval $$comp_name[1][3]
             set default_preview 0
             break
-        else if test "$action" = open; and test -n "$$comp[$i][4]"
-            eval $$comp[$i][4]
+        else if test "$action" = open; and test -n "$$comp_name[1][4]"
+            eval $$comp_name[1][4]
             break
-        else if test "$action" = source; and test -n "$$comp[$i][5]"
-            if functions "$$comp[$i][5]" 1>/dev/null
-                eval $$comp[$i][5]
+        else if test "$action" = source; and test -n "$$comp_name[1][5]"
+            if functions "$$comp_name[1][5]" 1>/dev/null
+                eval $$comp_name[1][5]
             else
-                echo $$comp[$i][5]
+                echo $$comp_name[1][5]
             end
             set default_source 0
             break

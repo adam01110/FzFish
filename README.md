@@ -36,7 +36,6 @@ Fork of [gazorby/fifc](https://github.com/gazorby/fifc) with additional features
 - Recursively search for files and folders when completing paths (using [fd](https://github.com/sharkdp/fd) or `find`)
 - Preview directory content with [eza](https://github.com/eza-community/eza), [exa](https://github.com/ogham/exa), or `ls`, using a vertical one-entry-per-line layout by default
 - Preview process trees (using [procs](https://github.com/dalance/procs) or `ps`)
-- `Tab` and `Shift-Tab` navigation inside the `fzf` picker
 - Interactive depth controls for file and directory search inside the `fzf` picker
 - Reapply bindings automatically when `fish_key_bindings` changes
 - Modular: easily add your own completion rules

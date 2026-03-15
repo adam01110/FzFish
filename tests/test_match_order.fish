@@ -3,6 +3,18 @@ set curr_fifc_ordered_comp $_fifc_ordered_comp
 set dir "tests/_resources/dir with spaces"
 set _fifc_complist_path (mktemp)
 
+function seq
+    echo 0
+end
+
+echo "fallback    description" >$_fifc_complist_path
+set _fifc_unordered_comp
+set _fifc_ordered_comp
+set actual (_fifc_action "preview" 'fallback')
+@test "preview fallback ignores empty completion list on seq zero" "$actual" = description
+
+functions -e seq
+
 # Add unordered completions
 set comp_1 \
     'test -f $fifc_candidate' \

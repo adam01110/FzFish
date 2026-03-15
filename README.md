@@ -37,6 +37,7 @@ Fork of [gazorby/fifc](https://github.com/gazorby/fifc) with additional features
 - Preview directory content with [eza](https://github.com/eza-community/eza), [exa](https://github.com/ogham/exa), or `ls`
 - Preview process trees (using [procs](https://github.com/dalance/procs) or `ps`)
 - `Tab` and `Shift-Tab` navigation inside the `fzf` picker
+- Interactive depth controls for file and directory search inside the `fzf` picker
 - Reapply bindings automatically when `fish_key_bindings` changes
 - Modular: easily add your own completion rules
 - Properly handle paths with spaces (needs fish 3.4+)
@@ -165,6 +166,13 @@ Wrap long lines in the default preview pane:
 - `set -U fifc_wrap_default_preview true`
 
 When enabled, the generic fallback preview uses `fzf --preview-window wrap`, so long descriptions wrap instead of requiring horizontal scrolling.
+
+Interactive depth controls for file and directory search:
+
+- `alt-up` / `alt-down` or `ctrl-k` / `ctrl-j` adjust the current search depth live
+- `alt-1` .. `alt-9` jump directly to a specific depth
+
+Path search starts at depth 1, and the picker prompt shows the active depth as `d:N> ` while you adjust it.
 
 ## Write your own rules
 
@@ -298,4 +306,4 @@ Additional features in this fork were taken or adapted from the following upstre
 - [justbispo](https://github.com/justbispo) for [gazorby/fifc#60](https://github.com/gazorby/fifc/pull/60), which fixes escaped `fzf` query handling
 - [justbispo/fifc](https://github.com/justbispo/fifc) for binding persistence, path display fixes, and apostrophe-safe completion
 - [thalesmello/fifc](https://github.com/thalesmello/fifc) for ignored-file search, per-group query history, incomplete-path completion, wrapped preview support, and man-page jump fixes
-- [schmas/fifc](https://github.com/schmas/fifc) for case-insensitive matching, hidden-file mode, and typed-directory matching improvements
+- [schmas/fifc](https://github.com/schmas/fifc) for case-insensitive matching, hidden-file mode, interactive depth controls, and typed-directory matching improvements

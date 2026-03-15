@@ -22,13 +22,38 @@ function _fifc_set_bindings --on-variable fish_key_bindings
         bind --mode $mode $fifc_keybinding _fifc
     end
 
-    # Set sources rules
+    # Build depth-control fzf options (default: depth 1)
+    # Bindings: ctrl-j/k and alt-up/down step depth, alt-1..9 jump directly
+    set -l _base "--tiebreak=length,index --prompt='d:1> '"
+    set -l _base "$_base --header='ctrl-j/k | alt-up/down | alt-1..9 depth'"
+
+    set -l _dir "$_base"
+    set -l _dir "$_dir --bind='alt-down:transform(_fifc_depth_transform +1 d)'"
+    set -l _dir "$_dir --bind='alt-up:transform(_fifc_depth_transform -1 d)'"
+    set -l _dir "$_dir --bind='ctrl-j:transform(_fifc_depth_transform +1 d)'"
+    set -l _dir "$_dir --bind='ctrl-k:transform(_fifc_depth_transform -1 d)'"
+    for _n in 1 2 3 4 5 6 7 8 9
+        set _dir "$_dir --bind='alt-$_n:transform(_fifc_depth_transform $_n d)'"
+    end
+
+    set -l _file "$_base"
+    set -l _file "$_file --bind='alt-down:transform(_fifc_depth_transform +1)'"
+    set -l _file "$_file --bind='alt-up:transform(_fifc_depth_transform -1)'"
+    set -l _file "$_file --bind='ctrl-j:transform(_fifc_depth_transform +1)'"
+    set -l _file "$_file --bind='ctrl-k:transform(_fifc_depth_transform -1)'"
+    for _n in 1 2 3 4 5 6 7 8 9
+        set _file "$_file --bind='alt-$_n:transform(_fifc_depth_transform $_n)'"
+    end
+
+    # Set source rules
     fifc \
         -n 'test "$fifc_group" = "directories"' \
-        -s _fifc_source_directories
+        -s _fifc_source_directories \
+        -f $_dir
     fifc \
         -n 'test "$fifc_group" = "files"' \
-        -s _fifc_source_files
+        -s _fifc_source_files \
+        -f $_file
     fifc \
         -n 'test "$fifc_group" = processes' \
         -s 'ps -ax -o pid=,command='

@@ -172,7 +172,7 @@ Interactive depth controls for file and directory search:
 - `alt-up` / `alt-down` or `ctrl-k` / `ctrl-j` adjust the current search depth live
 - `alt-1` .. `alt-9` jump directly to a specific depth
 
-Path search starts at depth 1, and the picker prompt shows the active depth as `d:N> ` while you adjust it.
+Path search starts at depth 1, and the picker prompt shows the active depth as `d:N>` while you adjust it.
 
 ## Write your own rules
 

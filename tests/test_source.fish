@@ -39,5 +39,5 @@ set -e fifc_wrap_default_preview
 
 set -e fifc_commandline
 set -gx _fifc_unordered_comp $curr_fifc_unordered_comp
-set -gx _fifc_unordered_comp $curr_fifc_ordered_comp
+set -gx _fifc_ordered_comp $curr_fifc_ordered_comp
 command $fifc_rm_cmd $_fifc_complist_path

@@ -12,6 +12,12 @@ set fifc_commandline "$_commandline"
 set actual (_fifc_completion_group)
 @test "group test files" "$actual" = files
 
+set _commandline "cd tests/_resources/"
+complete -C --escape -- "$_commandline" >$_fifc_complist_path
+set fifc_commandline "$_commandline"
+set actual (_fifc_completion_group)
+@test "group test directories" "$actual" = directories
+
 set _commandline "ls -"
 complete -C --escape -- "$_commandline" >$_fifc_complist_path
 set fifc_commandline "$_commandline"

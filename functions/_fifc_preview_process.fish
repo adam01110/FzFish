@@ -1,14 +1,28 @@
 function _fifc_preview_process -d "Preview process informations"
-    set -l pid (_fifc_parse_pid "$fifc_candidate")
+    set -l pids (_fifc_parse_pid "$fifc_candidate")
+
+    if test -z "$pids"
+        if string match --regex --quiet -- '(^|.*\h)pkill(\h|$)' "$fifc_commandline"
+            set pids (pgrep -- "$fifc_candidate" 2>/dev/null)
+        end
+    end
+
+    set -l ps_pids (string join ',' $pids)
     set -l err_msg "\nThe process exited"
 
+    if test -z "$ps_pids"
+        set_color yellow
+        echo -e "$err_msg"
+        return 1
+    end
+
     if type -q procs
-        procs --color=always --tree $fifc_procs_opts "$pid"
+        procs --color=always --tree $fifc_procs_opts $pids
     else
         set -l ps_preview_fmt (string join ',' 'pid' 'ppid=PARENT' 'user' '%cpu' 'rss=RSS_IN_KB' 'start=START_TIME' 'command')
-        ps -o "$ps_preview_fmt" -p "$pid" 2>/dev/null
+        ps -o "$ps_preview_fmt" -p "$ps_pids" 2>/dev/null
     end
-    if not ps -p "$pid" &>/dev/null
+    if not ps -p "$ps_pids" &>/dev/null
         set_color yellow
         echo -e "$err_msg"
     end

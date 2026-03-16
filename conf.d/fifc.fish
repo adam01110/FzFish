@@ -85,7 +85,7 @@ if set -q _fifc_launched_by_fzf
         -p _fifc_preview_file \
         -o _fifc_open_file
     fifc \
-        -n 'test "$fifc_group" = processes -a (ps -p (_fifc_parse_pid "$fifc_candidate") &>/dev/null)' \
+        -n 'begin; test "$fifc_group" = processes; and ps -p (_fifc_parse_pid "$fifc_candidate") >/dev/null 2>/dev/null; end; or begin; string match --regex --quiet -- "(^|.*\\h)pkill(\\h|\\$)" "$fifc_commandline"; and pgrep -- "$fifc_candidate" >/dev/null 2>/dev/null; end' \
         -p _fifc_preview_process \
         -o _fifc_open_process \
         -e '^\\h*([0-9]+)'

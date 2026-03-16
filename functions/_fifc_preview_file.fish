@@ -15,8 +15,21 @@ function _fifc_preview_file -d "Preview the selected file with the right tool de
                 cat "$fifc_candidate"
             end
         case image pdf
-            if type -q chafa
-                chafa $fifc_chafa_opts "$fifc_candidate"
+            if type -q timg
+                set -l pixelation (_fifc_timg_pixelation)
+
+                set -l preview_columns 80
+                set -l preview_lines 40
+
+                set -q FZF_PREVIEW_COLUMNS
+                and set preview_columns $FZF_PREVIEW_COLUMNS
+
+                set -q FZF_PREVIEW_LINES
+                and set preview_lines $FZF_PREVIEW_LINES
+
+                set -l preview_width (math "max(1, $preview_columns)")
+                set -l preview_height (math "max(1, $preview_lines * 2)")
+                timg $pixelation --frames=1 --loops=1 -E -g"$preview_width"x"$preview_height" $fifc_timg_opts "$fifc_candidate"
             else
                 _fifc_preview_file_default "$fifc_candidate"
             end

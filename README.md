@@ -19,7 +19,7 @@ Fork of [gazorby/fifc](https://github.com/gazorby/fifc) with additional features
 - [fish](https://github.com/fish-shell/fish-shell) 3.4.0+
 - [fzf](https://github.com/junegunn/fzf)
 - [bat](https://github.com/sharkdp/bat) or `cat`
-- [chafa](https://github.com/hpjansson/chafa) or `file`
+- [timg](https://github.com/hzeller/timg) or `file`
 - [hexyl](https://github.com/sharkdp/hexyl) or `file`
 - [fd](https://github.com/sharkdp/fd) or `find`
 - [eza](https://github.com/eza-community/eza), [exa](https://github.com/ogham/exa), or `ls`
@@ -28,7 +28,7 @@ Fork of [gazorby/fifc](https://github.com/gazorby/fifc) with additional features
 
 ## Features
 
-- Preview/open any file: text with [bat](https://github.com/sharkdp/bat) or `cat`; images, gifs, pdfs, and archives with [chafa](https://github.com/hpjansson/chafa) or `file`; binaries with [hexyl](https://github.com/sharkdp/hexyl) or `file`
+- Preview/open any file: text with [bat](https://github.com/sharkdp/bat) or `cat`; images, gifs, and pdfs with [timg](https://github.com/hzeller/timg) or `file`; archives with `7z` or `file`; binaries with [hexyl](https://github.com/sharkdp/hexyl) or `file`
 - Preview/open command's man page
 - Preview/open function definitions
 - Preview/open full option description when completing commands
@@ -131,7 +131,7 @@ fifc can use modern tools if available:
 | Prefer                                           | Fallback to | Used for                                  | Custom options                            |
 | ------------------------------------------------ | ----------- | ----------------------------------------- | ----------------------------------------- |
 | [bat](https://github.com/sharkdp/bat)            | `cat`       | Preview files                             | `$fifc_bat_opts`                          |
-| [chafa](https://github.com/hpjansson/chafa)      | `file`      | Preview images, gif, pdf etc              | `$fifc_chafa_opts`                        |
+| [timg](https://github.com/hzeller/timg)          | `file`      | Preview images, gif, pdf etc              | `$fifc_timg_opts`                         |
 | [hexyl](https://github.com/sharkdp/hexyl)        | `file`      | Preview binaries                          | `$fifc_hexyl_opts`                        |
 | [fd](https://github.com/sharkdp/fd)              | `find`      | Complete paths                            | `$fifc_fd_opts`                           |
 | [eza](https://github.com/eza-community/eza)      | `exa`, `ls` | Preview directories                       | `$fifc_eza_opts`, `$fifc_exa_opts`, `$fifc_ls_opts` |
@@ -139,6 +139,11 @@ fifc can use modern tools if available:
 | [procs](https://github.com/dalance/procs)        | `ps`        | Complete processes and preview their tree | `$fifc_procs_opts`                        |
 
 Custom options can be added for any of the commands used by fifc using the variable mentioned in the above table.
+
+If `timg` falls back to block rendering in a terminal that supports a graphics protocol, force it with `fifc_timg_pixelation`:
+
+- `set -U fifc_timg_pixelation kitty`
+- `set -U fifc_timg_pixelation sixel`
 
 Example:
 

@@ -59,7 +59,7 @@ _: {
     devShells = {
       modern = mkInteractiveShell "modern" (commonPackages
         ++ attrValues {
-          inherit (pkgs) bat chafa eza fd hexyl procs ripgrep;
+          inherit (pkgs) bat eza fd hexyl procs ripgrep timg;
         });
 
       fallback = mkInteractiveShell "fallback" (commonPackages

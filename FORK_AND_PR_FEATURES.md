@@ -70,7 +70,7 @@ Legend:
 | Custom temp-file removal command (`fifc_rm_cmd`) | - | Y | - | - | - | - | Y | Y | - | - |
 | Extra `fzf` flags via config (`fifc_custom_fzf_opts`) | - | Y | - | - | - | - | Y | Y | - | - |
 | Directory completion preserves existing `fifc_fd_opts` / `fifc_find_opts` | - | - | Y | - | - | - | Y | Y | - | ~ |
-| Prefer `eza` for directory preview | - | - | - | Y | - | - | Y | - | - | ~ |
+| Prefer `eza` for directory preview | - | - | - | Y | - | - | ~ | - | - | ~ |
 | Fix escaped `fzf` query handling | - | - | - | - | Y | - | Y | Y | - | - |
 
 ### Fork-only features

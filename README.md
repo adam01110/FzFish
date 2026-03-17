@@ -130,6 +130,14 @@ To append a custom fzf command, for example to disable the `--exact` flag and in
 set -U fzfish_custom_fzf_opts +e
 ```
 
+To enable popup style (like atuin), where fzf appears in a floating window under the prompt instead of taking over the full terminal:
+
+```fish
+set -U fzfish_popup true
+```
+
+This uses `--height ~50%` by default.
+
 `fzfish` can use modern tools if available:
 
 | Prefer                                           | Fallback to | Used for                                  | Custom options                            |

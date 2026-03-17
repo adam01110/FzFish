@@ -18,6 +18,9 @@ function _fzfish_set_bindings --on-variable fish_key_bindings
     set -qU fzfish_custom_fzf_opts
     or set -U fzfish_custom_fzf_opts
 
+    set -qU fzfish_popup
+    or set -U fzfish_popup false
+
     set -q fzfish_depth_increase_keybindings
     or set -U fzfish_depth_increase_keybindings alt-right ctrl-l
 

@@ -64,6 +64,10 @@ function _fzfish
             $_fzfish_default_source_fzf_opts \
             $fzfish_custom_fzf_opts"
 
+    if test "$fzfish_popup" = true
+        set fzf_cmd "$fzf_cmd --height ~50% --border"
+    end
+
     if command tail --pid=$fish_pid -n 0 /dev/null >/dev/null 2>/dev/null
         set -l source_output_path (string join '' (mktemp) "_fzfish_source")
         command touch $source_output_path

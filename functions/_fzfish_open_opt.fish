@@ -6,13 +6,14 @@ function _fzfish_open_opt -d "Open a man page starting at the selected option"
     set -l output (man $cmd | col -b | string collect)
 
     set -l linenr (echo $output | awk "/$regex/{print NR}")
+    set -l less_args "+$linenr"
 
     if type -q bat
         echo $output | bat --color=always --language man --style plain $fzfish_bat_opts \
             # --RAW-CONTROL-CHARS allow color output of bat to be displayed
-            | less --RAW-CONTROL-CHARS "+$linenr"
-    else
-        set -l regex "^[[:blank:]]*(-+.*)*$opt"
-        man $cmd | less "+$linenr"
+            | less --RAW-CONTROL-CHARS $less_args
+        return
     end
+
+    man $cmd | less $less_args
 end

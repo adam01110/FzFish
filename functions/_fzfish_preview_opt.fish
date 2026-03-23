@@ -2,7 +2,6 @@ function _fzfish_preview_opt -d "Open man page of a command starting at the sele
     set -l regex "(?s)^(\-+[^\n]+)*$fzfish_candidate([^\-\w\.]([^\.\n]|\.{2,}|\w+\.)*|)\n{1,2}.*?(^(\-+[^\n]+|\w+))"
     set -l regex_replace '^\h+(\-+[^\n]+.*)'
     set -l cmd (string match --regex --groups-only -- '(^|\h+)(\w+) ?-*$' $fzfish_commandline)
-    echo $group
     set out (man $cmd 2>/dev/null | string replace -r $regex_replace '$1' \
         | begin
             if type -q rg

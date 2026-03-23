@@ -1,19 +1,15 @@
 functions -c _fzfish_source_files _fzfish_source_files_original
 
 function _fzfish_source_files
-    printf '%s\n' "$fzfish_fd_opts"
-    printf '%s\n' --
-    printf '%s\n' "$fzfish_find_opts"
+    printf '%s\n' $argv
 end
 
-set -e fzfish_fd_opts
-set -e fzfish_find_opts
 set actual (_fzfish_source_directories | string join '|')
-@test "directory source adds fd type filter" "$actual" = "-t d|--|"
+@test "directory source delegates depth and type" "$actual" = "1|d"
 
 set -gx fzfish_fd_opts --hidden
 set actual (_fzfish_source_directories | string join '|')
-@test "directory source preserves existing fd opts" "$actual" = "--hidden -t d|--|"
+@test "directory source ignores transport details" "$actual" = "1|d"
 
 function type
     if test "$argv[1]" = -q; and test "$argv[2]" = fd
@@ -26,11 +22,11 @@ end
 set -e fzfish_fd_opts
 set -e fzfish_find_opts
 set actual (_fzfish_source_directories | string join '|')
-@test "directory source adds find type filter" "$actual" = "|--|-type d"
+@test "directory source uses same delegation without fd" "$actual" = "1|d"
 
 set -gx fzfish_find_opts -maxdepth 2
 set actual (_fzfish_source_directories | string join '|')
-@test "directory source preserves existing find opts" "$actual" = "|--|-maxdepth 2 -type d"
+@test "directory source stays independent from find opts" "$actual" = "1|d"
 
 functions -e type
 functions -e _fzfish_source_files

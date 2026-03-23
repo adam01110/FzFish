@@ -1,8 +1,8 @@
 function _fzfish_preview_process -d "Preview process informations"
     set -l pids (_fzfish_parse_pid "$fzfish_candidate" "$fzfish_commandline")
-
     set -l ps_pids (string join ',' $pids)
     set -l err_msg "\nThe process exited"
+    set -l procs_args --color=always --tree $fzfish_procs_opts
 
     if test -z "$ps_pids"
         set_color yellow
@@ -11,7 +11,7 @@ function _fzfish_preview_process -d "Preview process informations"
     end
 
     if type -q procs
-        procs --color=always --tree $fzfish_procs_opts $pids
+        procs $procs_args $pids
     else
         set -l ps_preview_fmt (string join ',' 'pid' 'ppid=PARENT' 'user' '%cpu' 'rss=RSS_IN_KB' 'start=START_TIME' 'command')
         ps -o "$ps_preview_fmt" -p "$ps_pids" 2>/dev/null

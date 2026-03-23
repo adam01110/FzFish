@@ -1,11 +1,27 @@
 function _fzfish
     set -f --export SHELL (command --search fish)
     set -l result
+    set -l init_vars \
+        _fzfish_default_source_fzf_opts \
+        fzfish_extracted \
+        fzfish_commandline
+    set -l cleanup_vars \
+        _fzfish_extract_regex \
+        _fzfish_default_source_fzf_opts \
+        _fzfish_complist_path \
+        fzfish_token \
+        fzfish_group \
+        fzfish_extracted \
+        fzfish_candidate \
+        fzfish_commandline \
+        fzfish_query
+
+    for var_name in $init_vars
+        set -gx $var_name
+    end
+
     set -Ux _fzfish_extract_regex
     set -gx _fzfish_complist_path (string join '' (mktemp) "_fzfish")
-    set -gx _fzfish_default_source_fzf_opts
-    set -gx fzfish_extracted
-    set -gx fzfish_commandline
     set -gx fzfish_token (commandline --current-token)
     set -gx fzfish_query "$fzfish_token"
 
@@ -124,14 +140,5 @@ function _fzfish
 
     command $fzfish_rm_cmd $_fzfish_complist_path
     command $fzfish_rm_cmd $fzf_output_path $source_output_path 2>/dev/null
-    # Clean state
-    set -e _fzfish_extract_regex
-    set -e _fzfish_default_source_fzf_opts
-    set -e _fzfish_complist_path
-    set -e fzfish_token
-    set -e fzfish_group
-    set -e fzfish_extracted
-    set -e fzfish_candidate
-    set -e fzfish_commandline
-    set -e fzfish_query
+    set -e $cleanup_vars
 end

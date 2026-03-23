@@ -24,6 +24,17 @@ set actual (_fzfish_action "source")
 @test "source match carries fzf options" "$actual" = "echo comp_3"
 @test "source match stores fzf options" "$_fzfish_default_source_fzf_opts" = '--prompt="d:1> "'
 
+function _fzfish_test_source_fn
+    echo comp_fn
+end
+
+set comp_4 true '' '' '' _fzfish_test_source_fn '--prompt="f:1> "'
+set _fzfish_unordered_comp comp_4
+set fzfish_commandline "dirs "
+set actual (_fzfish_action "source")
+@test "source match runs source function" "$actual" = comp_fn
+@test "source function stores fzf options" "$_fzfish_default_source_fzf_opts" = '--prompt="f:1> "'
+
 set _fzfish_unordered_comp comp_1 comp_2
 
 set fzfish_commandline "foo "
@@ -47,6 +58,7 @@ end)
 set -e fzfish_wrap_default_preview
 
 set -e fzfish_commandline
+functions -e _fzfish_test_source_fn
 set -gx _fzfish_unordered_comp $curr_fzfish_unordered_comp
 set -gx _fzfish_ordered_comp $curr_fzfish_ordered_comp
 command $fzfish_rm_cmd $_fzfish_complist_path

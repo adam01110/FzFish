@@ -21,9 +21,10 @@ end
 
 set fzfish_commandline "pkill "
 set fzfish_candidate fish
+set fzfish_procs_opts --watch 1s
 
 set actual (_fzfish_preview_process)
-@test "preview process resolves pkill names with procs" "$actual" = "procs:--color=always --tree 101 202"
+@test "preview process resolves pkill names with procs" "$actual" = "procs:--color=always --tree --watch 1s 101 202"
 
 functions -e type
 functions -e pgrep
@@ -31,3 +32,4 @@ functions -e procs
 functions -e ps
 set -e fzfish_commandline
 set -e fzfish_candidate
+set -e fzfish_procs_opts

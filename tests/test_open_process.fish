@@ -17,12 +17,14 @@ end
 
 set fzfish_commandline "pkill "
 set fzfish_candidate fish
+set fzfish_procs_opts --watch 1s
 
 set actual (_fzfish_open_process)
-@test "open process resolves pkill names with procs" "$actual" = "procs:--color=always --tree --pager=always 101 202"
+@test "open process resolves pkill names with procs" "$actual" = "procs:--color=always --tree --pager=always --watch 1s 101 202"
 
 functions -e type
 functions -e pgrep
 functions -e procs
 set -e fzfish_commandline
 set -e fzfish_candidate
+set -e fzfish_procs_opts

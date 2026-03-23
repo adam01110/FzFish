@@ -1,7 +1,10 @@
 function _fzfish_preview_fn -d "Preview the function definition"
+    set -l candidate "$fzfish_candidate"
+
     if type -q bat
-        type $fzfish_candidate | bat --color=always --language fish $fzfish_bat_opts
-    else
-        type $fzfish_candidate
+        type $candidate | bat --color=always --language fish $fzfish_bat_opts
+        return
     end
+
+    type $candidate
 end

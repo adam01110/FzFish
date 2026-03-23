@@ -21,9 +21,15 @@ set actual (_fzfish_completion_group)
 set _commandline "ls -"
 complete -C --escape -- "$_commandline" >$_fzfish_complist_path
 set fzfish_commandline "$_commandline"
+set fzfish_query keep
 set actual (_fzfish_completion_group)
 @test "group test options" "$actual" = options
 
+set query_is_set 0
+set -q fzfish_query; and set query_is_set 1
+@test "group options clears query" "$query_is_set" = 0
+
 set -e _fzfish_complist
 set -e fzfish_commandline
+set -e fzfish_query
 command $fzfish_rm_cmd $_fzfish_complist_path

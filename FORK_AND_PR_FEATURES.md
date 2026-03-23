@@ -1,7 +1,5 @@
 # Fork and Pull Request Feature Comparison
 
-Snapshot: 2026-03-15
-
 Base repository (upstream): `gazorby/fifc`
 
 Scope:
@@ -34,7 +32,7 @@ Legend:
 | --- | --- | --- |
 | `adam01110/fzfish` | Exact PR `#49`, exact PR `#52`, exact PR `#54`, and exact PR `#60`; `#49` already includes the PR `#61` behavior | Current fork state: custom rm command, custom fzf opts, preserved directory search opts, eza-first directory preview, fixed escaped query handling, correct man-page line jumps, per-group `fzf` query history, ignored-file search, optional hidden-file display, optional case-insensitive matching, optional wrapped default preview, vertical directory preview with optional custom command, no forced extra Tab bind, binding reapplication when `fish_key_bindings` changes, correct short-name display when the current path contains spaces, apostrophe-safe path completion, improved incomplete-path file completion, interactive depth controls for file and directory search, and better typed-directory-path matching |
 | `justbispo/fifc` | Most of PR `#49`, exact `#52`, exact `#60`, equivalent `#61`, plus extra bug fixes | Best fork if the goal is "bundle several existing PR/fork fixes" |
-| `thalesmello/fifc` | Independent UX and completion behavior changes | Does not really aggregate the open PRs |
+| `thalesmello/fifc` | Independent UX and completion behavior changes, plus newer shell-integration fixes | Does not really aggregate the open PRs; latest commits add env-var based config, Shift-Tab trigger handling, HOME/hidden-path fixes, and a completion-context flag |
 | `schmas/fifc` | Larger UX redesign: hidden files, case-insensitive mode, depth controls, preview changes | Only approximate overlap with `#52` and `#54` |
 | PR `#36` | Configurable `fzf` launcher / `fzf-tmux` support | Not present in the three requested forks |
 | PR `#54` | `eza`-first directory preview | Exact in `adam01110/fzfish`; approximate in `schmas/fifc` |
@@ -56,7 +54,7 @@ Legend:
 | --- | --- | --- | --- | --- |
 | `adam01110/fzfish` | 19 | `#49`, `#52`, `#54`, `#60` | `#61` equivalent via `#49` behavior; also includes the fork-only binding persistence fix, working custom `fzf` options, path-with-spaces display fix, apostrophe-safe completion fix, exact man-page jump, incomplete-path file completion fix, per-group `fzf` query history, ignored-file search, optional hidden-file display, optional case-insensitive matching, optional wrapped default preview, vertical directory preview with optional custom command, interactive depth controls, and typed-directory matching fix | `#36` |
 | `justbispo/fifc` | 11 | `#49`, `#52`, `#60` | `#61` equivalent via `#49` behavior | `#36`, `#54` |
-| `thalesmello/fifc` | 5 | - | No exact PR carry; only loose UX theme overlap with `#61` because Tab behavior changes inside fzf | `#36`, `#49`, `#52`, `#54`, `#60`, `#61` |
+| `thalesmello/fifc` | 14 | - | No exact PR carry; only loose UX theme overlap with `#61` because Tab behavior changes inside fzf; also adds HOME-aware path handling, hidden-path completion fixes, env-var config, Shift-Tab trigger compatibility, and an exported completion flag | `#36`, `#49`, `#52`, `#54`, `#60`, `#61` |
 | `schmas/fifc` | 20 | - | `#52` approximate; `#54` approximate | `#36`, `#49`, `#60`, `#61` |
 
 ## Shared-change matrix
@@ -89,9 +87,14 @@ This is the fork overlay for features that are not coming from the open PR list.
 | Store per-group `fzf` query history | Files, options, and other groups keep separate query history. | Y | - | Y | - |
 | Search ignored files too (`fd --no-ignore`) | Results include files normally hidden by ignore rules. | Y | - | Y | - |
 | Improve file completion for incomplete path strings | Partial paths like `src/mai` keep normal completion behavior instead of falling into a bad recursive search. | Y | - | Y | - |
+| Keep non-hidden matches visible inside hidden directories | Completing under paths like `~/.config/` still shows normal children instead of filtering the whole subtree away. | N | - | Y | - |
+| Resolve `~` selections to full `$HOME` paths | Choosing a completion rooted at `~` inserts the expanded home path and keeps the HOME depth rule working after path resolution. | N | - | Y | - |
 | Show hidden files via `fifc_show_hidden=true` | Opt-in dotfile visibility in normal completion results. | Y | - | - | Y |
 | Case-insensitive matching via `fifc_case_insensitive=true` | Opt-in case-insensitive matching inside `fzf`. | Y | - | - | Y |
 | `Tab` / `Shift-Tab` navigate entries inside fzf | `Tab` keys move selection instead of acting as the old multi-select key. | N | - | Y | Y |
+| Configure editor and keybindings via environment variables | Uses `FIFC_EDITOR`, `FIFC_KEYBINDING`, and `FIFC_OPEN_KEYBINDING`, so settings can be exported before FIFC loads. | N | - | Y | - |
+| Allow `Shift-Tab` as the FIFC trigger without breaking pager back-navigation | When FIFC itself is bound to `Shift-Tab`, the same key still falls back to Fish pager navigation and works across Fish key-name variants. | N | - | Y | - |
+| Export `IS_FIFC_COMPLETION=1` during picker runs | Custom preview/source/open commands can detect that they were launched from a FIFC completion session. | N | - | Y | - |
 | Configurable multi-select key instead of Tab | Multi-select moves off `Tab` and can be reassigned. | N | - | - | Y |
 | Interactive depth controls for file/directory search | Search depth can be changed live from inside the picker. | Y | - | - | Y |
 | Vertical directory preview with optional custom command | Directory preview becomes a one-entry-per-line list and can be overridden. | Y | - | - | Y |
@@ -103,7 +106,7 @@ This is the fork overlay for features that are not coming from the open PR list.
 | --- | --- |
 | `adam01110/fzfish` | Binding persistence, working custom `fzf` opts, spaces-safe path display, apostrophe-safe completion, exact man-page jump, incomplete-path completion, per-group history, ignored-file search, hidden-file mode, case-insensitive mode, wrapped default preview mode, vertical directory preview with optional custom command, interactive depth controls, typed-directory matching. |
 | `justbispo/fifc` | Binding persistence, working custom `fzf` opts, spaces-safe path display, apostrophe-safe completion. |
-| `thalesmello/fifc` | Wrapped preview, exact man-page jump, shallow `~` search, per-group history, ignored-file search, `Tab` / `Shift-Tab` navigation, incomplete-path completion. |
+| `thalesmello/fifc` | Wrapped preview, exact man-page jump, shallow `~` search, per-group history, ignored-file search, incomplete-path completion, hidden-path fix, HOME-path expansion, env-var config, `Shift-Tab` trigger compatibility, completion-context flag, `Tab` / `Shift-Tab` navigation. |
 | `schmas/fifc` | Hidden-file mode, case-insensitive mode, `Tab` / `Shift-Tab` navigation, configurable multi-select key, interactive depth controls, vertical directory preview, typed-directory matching. |
 
 ## Fork details
@@ -153,6 +156,7 @@ Net effect:
 
 - Independent UX/completion stack, not a bundle of the existing open PRs.
 - No exact PR carry from `#36`, `#49`, `#52`, `#54`, `#60`, or `#61`.
+- The newer commits mainly add shell-integration and path-handling fixes rather than more PR overlap.
 
 What the fork-only features actually do:
 
@@ -162,6 +166,11 @@ What the fork-only features actually do:
 - Single-select navigation model: inside `fzf`, `Tab` and `Shift-Tab` move the cursor instead of toggling multiselect, FIFC runs in single-select mode, and each completion group gets its own persisted query history file.
 - Search ignored files too: the `fd` path adds `--no-ignore`, so results can include files normally hidden by `.gitignore` or other ignore rules.
 - Incomplete path completion: partial path fragments are no longer treated as directory roots for recursive search, so incomplete strings keep using the regular Fish completion list until they become a real directory path.
+- Hidden-path fix: the `find` fallback now filters only hidden basenames, not every path containing `/.`, so completing inside directories such as `~/.config/` still returns normal child entries.
+- HOME-aware path handling: the home-depth shortcut now still triggers after resolving `~`, and selected `~` entries are inserted as full `$HOME/...` paths rather than preserving the literal tilde.
+- Environment-variable configuration: editor and keybindings move to `FIFC_EDITOR`, `FIFC_KEYBINDING`, and `FIFC_OPEN_KEYBINDING`, which means they can be exported before FIFC is loaded instead of relying on universal variables.
+- Shift-Tab trigger compatibility: if FIFC itself is bound to `Shift-Tab`, the binding dispatches to FIFC normally but still falls back to Fish's pager-back behavior when the completion pager is open, with separate handling for Fish 3 vs newer key names.
+- Completion-context flag: FIFC now exports `IS_FIFC_COMPLETION=1` while launching the picker, so custom source/preview/open commands can branch on whether they are running inside a completion session.
 
 ### `schmas/fifc`
 
@@ -189,6 +198,7 @@ If the goal is to build a personal fork with the highest-value low-overlap chang
 2. Choose `#49` or `#61`, not both; `#61` is redundant if you already take `#49` or `justbispo/fifc`.
 3. `adam01110/fzfish` now also includes the `justbispo/fifc` working custom-`fzf`-options fix (`051febd`) and apostrophe-safe completion fix (`b3f5886`), the `thalesmello/fifc` wrapped-preview feature (`d74393b`), exact man-page jump fix (`0861074`), per-group `fzf` history feature (`3ef1942`), and ignored-file search (`6f1096c`), and the `schmas/fifc` hidden-file option (`1b165ac`), case-insensitive matching option (`0ca852d`, `8773786`), vertical directory preview override (`1c6d080`), interactive depth controls (`58408e8`, `f8f31bc`, `2b98131`), and typed-directory matching fix (`4b305f1`), in addition to the earlier binding-persistence fix (`e70150d`) and paths-with-spaces display fix (`caf694e`).
 4. Treat `thalesmello/fifc` and `schmas/fifc` as UX forks, not straightforward PR bundles; several of their remaining changes alter navigation, ranking, preview style, or default search scope.
+5. New `thalesmello/fifc` commits not already represented in `adam01110/fzfish` are the hidden-path fix (`e8d9323`), HOME-path handling updates (`9e75154`, `92123e4`), env-var config (`777228d`), Shift-Tab trigger compatibility (`fe25f5e`, `b5338d0`, `70bd7ae`), and the exported completion-context flag (`528b19a`).
 
 ## Bottom line
 

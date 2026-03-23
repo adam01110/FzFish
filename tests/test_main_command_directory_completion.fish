@@ -71,6 +71,7 @@ set -e fzfish_rm_cmd
 set -gx HOME "$_mock_old_home"
 set -e _mock_old_home
 
+rm -rf "$_mock_home/.local"
 rmdir "$_mock_home/foo"
 rmdir "$_mock_home"
 rm -f "$PWD/tests/_tmp_main_command_directory_completion_fzfish"
